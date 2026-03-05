@@ -1,0 +1,137 @@
+import Link from "next/link"
+import { Mail, Phone, MapPin } from "lucide-react"
+import { COMPANY, NAV_LINKS, SERVICES } from "@/lib/constants"
+
+export function Footer() {
+  return (
+    <footer className="border-t border-border/50 bg-background">
+      <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+          {/* Company Info */}
+          <div>
+            <Link href="/" className="inline-block">
+              <span className="font-serif text-lg font-bold tracking-wide text-foreground">
+                MAHADEV{" "}
+              </span>
+              <span className="text-gold-gradient font-serif text-lg font-bold tracking-wide">
+                AROMATIC
+              </span>
+            </Link>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              {COMPANY.tagline}. Based in the perfume capital of India,
+              Kannauj, we combine traditional craftsmanship with modern
+              analytical science.
+            </p>
+            <div className="mt-6 flex flex-col gap-3">
+              {COMPANY.labCertifications.map((cert) => (
+                <span
+                  key={cert}
+                  className="inline-flex w-fit items-center rounded-full border border-border/60 px-3 py-1 text-xs text-muted-foreground"
+                >
+                  {cert}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div>
+            <h3 className="font-serif text-sm font-semibold uppercase tracking-wider text-foreground">
+              Navigation
+            </h3>
+            <div className="gold-line mt-3 w-12" />
+            <ul className="mt-4 flex flex-col gap-2.5">
+              {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted-foreground transition-colors hover:text-gold"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div>
+            <h3 className="font-serif text-sm font-semibold uppercase tracking-wider text-foreground">
+              Services
+            </h3>
+            <div className="gold-line mt-3 w-12" />
+            <ul className="mt-4 flex flex-col gap-2.5">
+              {SERVICES.map((service) => (
+                <li key={service.slug}>
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="text-sm text-muted-foreground transition-colors hover:text-gold"
+                  >
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="font-serif text-sm font-semibold uppercase tracking-wider text-foreground">
+              Contact
+            </h3>
+            <div className="gold-line mt-3 w-12" />
+            <ul className="mt-4 flex flex-col gap-4">
+              <li className="flex items-start gap-3">
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                <a
+                  href={`tel:${COMPANY.phone}`}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {COMPANY.phone}
+                </a>
+              </li>
+              <li className="flex items-start gap-3">
+                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                <a
+                  href={`mailto:${COMPANY.email}`}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {COMPANY.email}
+                </a>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                <span className="text-sm text-muted-foreground">
+                  {COMPANY.address}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="gold-line mt-12" />
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 md:flex-row">
+          <p className="text-xs text-muted-foreground">
+            &copy; {new Date().getFullYear()} {COMPANY.name}. All rights
+            reserved.
+          </p>
+          <div className="flex gap-6">
+            <Link
+              href="/contact"
+              className="text-xs text-muted-foreground transition-colors hover:text-gold"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/contact"
+              className="text-xs text-muted-foreground transition-colors hover:text-gold"
+            >
+              Terms of Service
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}
