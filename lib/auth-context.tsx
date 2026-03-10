@@ -43,17 +43,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         credentials: "include"
       })
       
-      const data = await res.json()
-      console.log("[v0] Login response:", { status: res.status, data })
-      
       if (res.ok) {
         setIsAuthenticated(true)
         return true
       }
-      console.log("[v0] Login failed:", data.error)
       return false
-    } catch (error) {
-      console.log("[v0] Login error:", error)
+    } catch {
       return false
     }
   }, [])

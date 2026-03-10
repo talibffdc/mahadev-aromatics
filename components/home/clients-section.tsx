@@ -22,7 +22,7 @@ export function ClientsSection() {
       <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <AnimatedSection className="text-center">
           <p className="text-sm font-medium uppercase tracking-widest text-gold">
-            Our Clients & Partners
+            Trusted by 50+ brands
           </p>
           <div className="gold-line mx-auto mt-4 w-16" />
         </AnimatedSection>
@@ -39,9 +39,19 @@ export function ClientsSection() {
                 key={`${client.name}-${i}`}
                 className="flex h-16 shrink-0 items-center justify-center rounded-lg border border-border/40 bg-secondary/50 px-8"
               >
-                <span className="font-serif text-sm font-medium text-muted-foreground">
-                  {client.name}
-                </span>
+                {client.logo ? (
+                  <Image
+                    src={client.logo}
+                    alt={client.name}
+                    width={120}
+                    height={40}
+                    className="h-10 w-auto object-contain"
+                  />
+                ) : (
+                  <span className="font-serif text-sm font-medium text-muted-foreground">
+                    {client.name}
+                  </span>
+                )}
               </div>
             ))}
           </div>

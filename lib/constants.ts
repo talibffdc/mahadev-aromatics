@@ -1,17 +1,19 @@
 export const COMPANY = {
-  name: "Mahadev Aromatic",
+  name: "Mahadev Aromatics",
   tagline: "Custom Fragrance Development & Aroma Testing Laboratory",
-  phone: "+91 98765 43210",
-  email: "info@mahadevaromatic.com",
-  whatsapp: "919876543210",
-  address: "Plot No. 42, Industrial Area Phase II, Kannauj, Uttar Pradesh 209725, India",
-  city: "Kannauj",
-  state: "Uttar Pradesh",
+  phone: "+91 8868861665",
+  phone2: "+91 7678204976",
+  email: "info@mahadevomatics.com",
+  whatsapp: "918868861665",
+  address: "Plot No. 69, Phase-3, Sector-24, HSIIDC Industrial Estate, Barhi, Sonipat, Haryana 131101, India",
+  gst: "06CJIPK3612H1ZE",
+  city: "Sonipat",
+  state: "Haryana",
   country: "India",
-  website: "https://mahadevaromatic.com",
+  website: "https://mahadevromatics.com",
   founded: "2005",
   experience: "20+",
-  clientsServed: "500+",
+  clientsServed: "50+",
   fragrancesDeveloped: "10,000+",
   labCertifications: ["ISO 9001:2015", "GMP Certified", "IFRA Compliant"],
 } as const
@@ -194,6 +196,9 @@ export const PRODUCT_CATEGORIES = [
 ] as const
 
 export const CLIENTS = [
+  { name: "Air Odo", category: "Air Care", logo: "/images/clients/air-odo.jpg" },
+  { name: "Airwel", category: "Air Care", logo: "/images/clients/airwel.jpg" },
+  { name: "My Fragrance", category: "Perfumery", logo: "/images/clients/my-fragrance.jpg" },
   { name: "Luxe Fragrances", category: "Perfumery" },
   { name: "CleanHome India", category: "Home Care" },
   { name: "PureGlow Cosmetics", category: "Cosmetics" },
@@ -203,9 +208,6 @@ export const CLIENTS = [
   { name: "BrightClean Industries", category: "Home Care" },
   { name: "NaturEssence", category: "Personal Care" },
   { name: "ScentCraft Studios", category: "Perfumery" },
-  { name: "VitalCare Labs", category: "Cosmetics" },
-  { name: "AirBliss Solutions", category: "Air Care" },
-  { name: "EverFresh FMCG", category: "Home Care" },
 ] as const
 
 export const TESTIMONIALS = [

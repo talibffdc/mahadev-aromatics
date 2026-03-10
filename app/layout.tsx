@@ -7,6 +7,7 @@ import { CartProvider } from '@/lib/cart-context'
 import { MiniCart } from '@/components/products/mini-cart'
 import { COMPANY } from '@/lib/constants'
 import { getOrganizationSchema, getWebSiteSchema, getLocalBusinessSchema } from '@/lib/seo'
+import { DEMO_REVIEWS, getReviewSchema } from '@/lib/reviews'
 import './globals.css'
 
 const inter = Inter({
@@ -79,6 +80,7 @@ export default function RootLayout({
     getOrganizationSchema(),
     getWebSiteSchema(),
     getLocalBusinessSchema(),
+    getReviewSchema(DEMO_REVIEWS),
   ]
 
   return (

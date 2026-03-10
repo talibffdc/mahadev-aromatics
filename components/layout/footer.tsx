@@ -83,12 +83,22 @@ export function Footer() {
             <ul className="mt-4 flex flex-col gap-4">
               <li className="flex items-start gap-3">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-                <a
-                  href={`tel:${COMPANY.phone}`}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {COMPANY.phone}
-                </a>
+                <div className="flex flex-col gap-1">
+                  <a
+                    href={`tel:${COMPANY.phone}`}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {COMPANY.phone}
+                  </a>
+                  {COMPANY.phone2 && (
+                    <a
+                      href={`tel:${COMPANY.phone2}`}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {COMPANY.phone2}
+                    </a>
+                  )}
+                </div>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
@@ -101,9 +111,16 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-                <span className="text-sm text-muted-foreground">
-                  {COMPANY.address}
-                </span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm text-muted-foreground">
+                    {COMPANY.address}
+                  </span>
+                  {COMPANY.gst && (
+                    <span className="text-xs text-muted-foreground">
+                      GST: {COMPANY.gst}
+                    </span>
+                  )}
+                </div>
               </li>
             </ul>
           </div>
@@ -118,13 +135,13 @@ export function Footer() {
           </p>
           <div className="flex gap-6">
             <Link
-              href="/contact"
+              href="/privacy-policy"
               className="text-xs text-muted-foreground transition-colors hover:text-gold"
             >
               Privacy Policy
             </Link>
             <Link
-              href="/contact"
+              href="/terms-and-conditions"
               className="text-xs text-muted-foreground transition-colors hover:text-gold"
             >
               Terms of Service

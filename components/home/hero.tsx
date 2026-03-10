@@ -68,18 +68,18 @@ function FloatingDot({
 export function Hero() {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
-      {/* Background floral image */}
+      {/* Background image from development section */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <Image
-          src="/images/hero-floral-bg.jpg"
+          src="/images/floral-bg-3.jpg"
           alt=""
           fill
-          className="object-cover opacity-[0.15]"
+          className="object-cover"
           priority
         />
       </div>
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-secondary/30" />
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/75 to-background/70 backdrop-blur-sm" />
 
       {/* Floating molecules */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
