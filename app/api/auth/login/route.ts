@@ -17,8 +17,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { password } = body
 
+    console.log("[v0] Login attempt with password:", password)
+
     // Validate input
     if (!password || typeof password !== "string") {
+      console.log("[v0] Invalid password format")
       return NextResponse.json(
         { error: "Password is required" },
         { status: 400 }
@@ -37,8 +40,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    console.log("[v0] Comparing passwords - provided:", password, "expected:", adminPassword)
+
     // Compare passwords
     if (password !== adminPassword) {
+      console.log("[v0] Password mismatch!")
       // Add slight delay to prevent timing attacks
       await new Promise(resolve => setTimeout(resolve, 500))
       return NextResponse.json(
@@ -46,6 +52,8 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       )
     }
+
+    console.log("[v0] Password matched! Creating session.")
 
     // Create session token
     const sessionToken = `${Date.now()}-${simpleHash(password + Date.now().toString())}`
