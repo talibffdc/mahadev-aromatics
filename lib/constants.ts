@@ -34,7 +34,7 @@ export const SERVICES = [
     shortDescription: "Advanced gas chromatography-mass spectrometry for precise identification of fragrance compounds and raw material purity testing.",
     description: "Our state-of-the-art GCMS (Gas Chromatography-Mass Spectrometry) and GLC (Gas-Liquid Chromatography) laboratory provides comprehensive analytical services for the fragrance industry. We identify and quantify individual components in complex fragrance mixtures with exceptional precision, enabling accurate reverse engineering, quality control, and regulatory compliance.",
     icon: "FlaskConical",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80",
     benefits: [
       "Precise compound identification with 99.9% accuracy",
       "Full compositional breakdown of fragrance blends",
@@ -56,7 +56,7 @@ export const SERVICES = [
     shortDescription: "Bespoke fragrance creation by expert perfumers tailored to your brand identity, target market, and product application.",
     description: "Our team of experienced perfumers crafts unique fragrances from concept to final formulation. Whether you need a signature scent for a luxury perfume line or a functional fragrance for household products, we develop custom formulations that align with your brand identity, market positioning, and budget requirements. Every fragrance undergoes rigorous stability and performance testing.",
     icon: "Sparkles",
-    image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=800&q=80",
     benefits: [
       "Dedicated perfumer assigned to your project",
       "Unlimited fragrance modifications until approval",
@@ -78,7 +78,7 @@ export const SERVICES = [
     shortDescription: "Precision reverse engineering and matching of existing fragrances using advanced analytical and olfactory techniques.",
     description: "Combining advanced GCMS analysis with the expertise of our trained perfumers, we offer highly accurate fragrance matching and recreation services. Whether you need to replicate a discontinued favorite, match a competitor's product, or create a cost-effective alternative to an existing fragrance, our matching process achieves remarkable fidelity while respecting intellectual property guidelines.",
     icon: "Repeat",
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=800&q=80",
     benefits: [
       "95%+ accuracy in fragrance matching",
       "GCMS-backed analytical precision",
