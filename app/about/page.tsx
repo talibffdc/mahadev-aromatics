@@ -128,8 +128,8 @@ export default function AboutPage() {
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border/40">
               <Image
-                src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80"
-                alt="Mahadev Aromatic fragrance development laboratory in Kannauj, India"
+                src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80"
+                alt="Premium essential oils and botanical ingredients for fragrance development at Mahadev Aromatic"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
