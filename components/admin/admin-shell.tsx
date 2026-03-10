@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard,
   FileText,
@@ -15,9 +15,11 @@ import {
   Menu,
   LogOut,
   X,
+  Power,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/lib/auth-context"
 
 const ADMIN_NAV = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -32,7 +34,15 @@ const ADMIN_NAV = [
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const { logout } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const handleLogout = async () => {
+    await logout()
+    router.push("/admin/login")
+    router.refresh()
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -92,7 +102,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </div>
         </nav>
 
-        <div className="border-t border-border/50 p-3">
+        <div className="border-t border-border/50 p-3 space-y-1">
           <Link
             href="/"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
@@ -100,6 +110,13 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <LogOut className="h-4 w-4" />
             Back to Website
           </Link>
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-destructive transition-colors hover:bg-destructive/10"
+          >
+            <Power className="h-4 w-4" />
+            Sign Out
+          </button>
         </div>
       </aside>
 

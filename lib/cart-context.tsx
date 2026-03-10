@@ -9,6 +9,12 @@ export interface CartItem {
   quantity: number
 }
 
+export interface LastAddedItem {
+  product: Product
+  variant: ProductVariant
+  quantity: number
+}
+
 interface CartContextType {
   items: CartItem[]
   addItem: (product: Product, variant: ProductVariant, quantity?: number) => void
@@ -17,12 +23,27 @@ interface CartContextType {
   clearCart: () => void
   totalItems: number
   totalPrice: number
+  // Mini-cart state
+  isMiniCartOpen: boolean
+  openMiniCart: () => void
+  closeMiniCart: () => void
+  lastAddedItem: LastAddedItem | null
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([])
+  const [isMiniCartOpen, setIsMiniCartOpen] = useState(false)
+  const [lastAddedItem, setLastAddedItem] = useState<LastAddedItem | null>(null)
+
+  const openMiniCart = useCallback(() => {
+    setIsMiniCartOpen(true)
+  }, [])
+
+  const closeMiniCart = useCallback(() => {
+    setIsMiniCartOpen(false)
+  }, [])
 
   const addItem = useCallback(
     (product: Product, variant: ProductVariant, quantity = 1) => {
@@ -37,6 +58,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
         return [...prev, { product, variant, quantity }]
       })
+      // Track last added item and open mini-cart
+      setLastAddedItem({ product, variant, quantity })
+      setIsMiniCartOpen(true)
     },
     []
   )
@@ -59,6 +83,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => {
     setItems([])
+    setLastAddedItem(null)
   }, [])
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
@@ -70,7 +95,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice }}
+      value={{ 
+        items, 
+        addItem, 
+        removeItem, 
+        updateQuantity, 
+        clearCart, 
+        totalItems, 
+        totalPrice,
+        isMiniCartOpen,
+        openMiniCart,
+        closeMiniCart,
+        lastAddedItem
+      }}
     >
       {children}
     </CartContext.Provider>

@@ -3,14 +3,39 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { ShoppingBag, CreditCard, CheckCircle2 } from "lucide-react"
+import { ShoppingBag, CreditCard, CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
+import { z } from "zod"
 import { useCart } from "@/lib/cart-context"
 import { GlassCard } from "@/components/shared/glass-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+
+// Validation schema
+const checkoutSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().min(10, "Please enter a valid phone number").regex(/^[\d\s+()-]+$/, "Invalid phone number format"),
+  company: z.string().max(100, "Company name is too long").optional().or(z.literal("")),
+  address: z.string().min(10, "Please enter a complete address").max(500, "Address is too long"),
+  city: z.string().min(2, "Please enter a valid city").max(100, "City name is too long"),
+  state: z.string().min(2, "Please enter a valid state").max(100, "State name is too long"),
+  pincode: z.string().regex(/^\d{6}$/, "Please enter a valid 6-digit PIN code"),
+})
+
+type CheckoutFormData = z.infer<typeof checkoutSchema>
+type FormErrors = Partial<Record<keyof CheckoutFormData, string>>
+
+// Sanitize input to prevent XSS
+function sanitizeInput(input: string): string {
+  return input
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;")
+    .trim()
+}
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -22,8 +47,9 @@ function formatPrice(price: number) {
 
 export function CheckoutForm() {
   const { items, totalPrice, clearCart } = useCart()
-  const router = useRouter()
   const [submitted, setSubmitted] = useState(false)
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   if (items.length === 0 && !submitted) {
     return (
@@ -70,14 +96,48 @@ export function CheckoutForm() {
   const shipping = totalPrice >= 999 ? 0 : 99
   const grandTotal = totalPrice + shipping
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    setErrors({})
+
+    const formData = new FormData(e.currentTarget)
+    const data: CheckoutFormData = {
+      name: sanitizeInput(formData.get("name") as string || ""),
+      email: sanitizeInput(formData.get("email") as string || ""),
+      phone: sanitizeInput(formData.get("phone") as string || ""),
+      company: sanitizeInput(formData.get("company") as string || ""),
+      address: sanitizeInput(formData.get("address") as string || ""),
+      city: sanitizeInput(formData.get("city") as string || ""),
+      state: sanitizeInput(formData.get("state") as string || ""),
+      pincode: sanitizeInput(formData.get("pincode") as string || ""),
+    }
+
+    // Validate
+    const result = checkoutSchema.safeParse(data)
+    
+    if (!result.success) {
+      const fieldErrors: FormErrors = {}
+      result.error.errors.forEach((error) => {
+        const field = error.path[0] as keyof CheckoutFormData
+        if (!fieldErrors[field]) {
+          fieldErrors[field] = error.message
+        }
+      })
+      setErrors(fieldErrors)
+      setIsSubmitting(false)
+      return
+    }
+
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 500))
     clearCart()
     setSubmitted(true)
+    setIsSubmitting(false)
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-3">
+    <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-3" noValidate>
       {/* Form */}
       <div className="lg:col-span-2 space-y-8">
         {/* Customer Info */}
@@ -88,19 +148,64 @@ export function CheckoutForm() {
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             <div>
               <Label htmlFor="name" className="text-foreground">Full Name</Label>
-              <Input id="name" required placeholder="Your full name" className="mt-1" />
+              <Input 
+                id="name" 
+                name="name"
+                required 
+                placeholder="Your full name" 
+                className={`mt-1 ${errors.name ? "border-destructive" : ""}`}
+                maxLength={100}
+              />
+              {errors.name && (
+                <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
+                  <AlertCircle className="h-3 w-3" />
+                  {errors.name}
+                </p>
+              )}
             </div>
             <div>
               <Label htmlFor="email" className="text-foreground">Email</Label>
-              <Input id="email" type="email" required placeholder="you@example.com" className="mt-1" />
+              <Input 
+                id="email" 
+                name="email"
+                type="email" 
+                required 
+                placeholder="you@example.com" 
+                className={`mt-1 ${errors.email ? "border-destructive" : ""}`}
+              />
+              {errors.email && (
+                <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
+                  <AlertCircle className="h-3 w-3" />
+                  {errors.email}
+                </p>
+              )}
             </div>
             <div>
               <Label htmlFor="phone" className="text-foreground">Phone</Label>
-              <Input id="phone" type="tel" required placeholder="+91 98765 43210" className="mt-1" />
+              <Input 
+                id="phone" 
+                name="phone"
+                type="tel" 
+                required 
+                placeholder="+91 98765 43210" 
+                className={`mt-1 ${errors.phone ? "border-destructive" : ""}`}
+              />
+              {errors.phone && (
+                <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
+                  <AlertCircle className="h-3 w-3" />
+                  {errors.phone}
+                </p>
+              )}
             </div>
             <div>
               <Label htmlFor="company" className="text-foreground">Company (Optional)</Label>
-              <Input id="company" placeholder="Company name" className="mt-1" />
+              <Input 
+                id="company" 
+                name="company"
+                placeholder="Company name" 
+                className="mt-1" 
+                maxLength={100}
+              />
             </div>
           </div>
         </GlassCard>
@@ -113,20 +218,72 @@ export function CheckoutForm() {
           <div className="mt-4 grid gap-4">
             <div>
               <Label htmlFor="address" className="text-foreground">Address</Label>
-              <Textarea id="address" required placeholder="Street address, building, floor..." className="mt-1" />
+              <Textarea 
+                id="address" 
+                name="address"
+                required 
+                placeholder="Street address, building, floor..." 
+                className={`mt-1 ${errors.address ? "border-destructive" : ""}`}
+                maxLength={500}
+              />
+              {errors.address && (
+                <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
+                  <AlertCircle className="h-3 w-3" />
+                  {errors.address}
+                </p>
+              )}
             </div>
             <div className="grid gap-4 md:grid-cols-3">
               <div>
                 <Label htmlFor="city" className="text-foreground">City</Label>
-                <Input id="city" required placeholder="City" className="mt-1" />
+                <Input 
+                  id="city" 
+                  name="city"
+                  required 
+                  placeholder="City" 
+                  className={`mt-1 ${errors.city ? "border-destructive" : ""}`}
+                  maxLength={100}
+                />
+                {errors.city && (
+                  <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
+                    <AlertCircle className="h-3 w-3" />
+                    {errors.city}
+                  </p>
+                )}
               </div>
               <div>
                 <Label htmlFor="state" className="text-foreground">State</Label>
-                <Input id="state" required placeholder="State" className="mt-1" />
+                <Input 
+                  id="state" 
+                  name="state"
+                  required 
+                  placeholder="State" 
+                  className={`mt-1 ${errors.state ? "border-destructive" : ""}`}
+                  maxLength={100}
+                />
+                {errors.state && (
+                  <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
+                    <AlertCircle className="h-3 w-3" />
+                    {errors.state}
+                  </p>
+                )}
               </div>
               <div>
                 <Label htmlFor="pincode" className="text-foreground">PIN Code</Label>
-                <Input id="pincode" required placeholder="110001" className="mt-1" />
+                <Input 
+                  id="pincode" 
+                  name="pincode"
+                  required 
+                  placeholder="110001" 
+                  className={`mt-1 ${errors.pincode ? "border-destructive" : ""}`}
+                  maxLength={6}
+                />
+                {errors.pincode && (
+                  <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
+                    <AlertCircle className="h-3 w-3" />
+                    {errors.pincode}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -207,8 +364,16 @@ export function CheckoutForm() {
             type="submit"
             className="mt-6 w-full bg-gold text-primary-foreground hover:bg-gold-dark font-medium"
             size="lg"
+            disabled={isSubmitting}
           >
-            Place Order
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              "Place Order"
+            )}
           </Button>
         </GlassCard>
       </div>

@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu } from "lucide-react"
+import { Menu, ShoppingBag } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { NAV_LINKS, COMPANY } from "@/lib/constants"
+import { useCart } from "@/lib/cart-context"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -19,6 +20,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
+  const { totalItems, openMiniCart } = useCart()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -66,6 +68,19 @@ export function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden items-center gap-3 lg:flex">
+          {/* Cart button */}
+          <button
+            onClick={openMiniCart}
+            className="relative flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors"
+            aria-label={`Open cart with ${totalItems} items`}
+          >
+            <ShoppingBag className="h-5 w-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gold text-xs font-bold text-primary-foreground">
+                {totalItems > 9 ? "9+" : totalItems}
+              </span>
+            )}
+          </button>
           <Button
             asChild
             className="bg-gold text-primary-foreground hover:bg-gold-dark font-medium"
@@ -74,14 +89,28 @@ export function Navbar() {
           </Button>
         </div>
 
-        {/* Mobile Menu */}
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild className="lg:hidden">
-            <Button variant="ghost" size="icon" className="text-foreground">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Open menu</span>
-            </Button>
-          </SheetTrigger>
+        {/* Mobile Cart + Menu */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <button
+            onClick={openMiniCart}
+            className="relative flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors"
+            aria-label={`Open cart with ${totalItems} items`}
+          >
+            <ShoppingBag className="h-5 w-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gold text-xs font-bold text-primary-foreground">
+                {totalItems > 9 ? "9+" : totalItems}
+              </span>
+            )}
+          </button>
+          
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-foreground">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </SheetTrigger>
           <SheetContent side="right" className="w-72 bg-background border-border">
             <SheetHeader>
               <SheetTitle className="text-left font-serif text-foreground">
@@ -118,7 +147,8 @@ export function Navbar() {
               </p>
             </div>
           </SheetContent>
-        </Sheet>
+          </Sheet>
+        </div>
       </nav>
     </header>
   )

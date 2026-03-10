@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { AdminShell } from "@/components/admin/admin-shell"
+import { AuthProvider } from "@/lib/auth-context"
 
 export const metadata: Metadata = {
   title: {
@@ -14,5 +14,5 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <AdminShell>{children}</AdminShell>
+  return <AuthProvider>{children}</AuthProvider>
 }

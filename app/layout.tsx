@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
 import { CartProvider } from '@/lib/cart-context'
+import { MiniCart } from '@/components/products/mini-cart'
 import { COMPANY } from '@/lib/constants'
 import { getOrganizationSchema, getWebSiteSchema, getLocalBusinessSchema } from '@/lib/seo'
 import './globals.css'
@@ -98,6 +99,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           <Footer />
+          <MiniCart />
         </CartProvider>
         <Analytics />
       </body>

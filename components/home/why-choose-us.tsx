@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Crown, Microscope, TrendingUp, Gem } from "lucide-react"
 import { USP_ITEMS } from "@/lib/constants"
 import { SectionHeading } from "@/components/shared/section-heading"
@@ -16,8 +17,18 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 export function WhyChooseUs() {
   return (
-    <section className="py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <section className="relative py-20 md:py-28 overflow-hidden">
+      {/* Background floral image */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src="/images/floral-bg-2.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-[0.06]"
+          priority={false}
+        />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <SectionHeading
           title="Why Choose Mahadev Aromatic"
           subtitle="Two decades of excellence in fragrance science, combining traditional perfumery artistry with cutting-edge analytical capabilities."

@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { AnimatedSection } from "@/components/shared/animated-section"
 
 const TRUST_PILLS = [
@@ -11,8 +12,18 @@ const TRUST_PILLS = [
 
 export function TrustSection() {
   return (
-    <section className="py-16 md:py-20">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <section className="relative py-16 md:py-20 overflow-hidden">
+      {/* Background floral image */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src="/images/floral-bg-1.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-[0.08]"
+          priority={false}
+        />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <AnimatedSection className="text-center">
           <p className="text-sm font-medium uppercase tracking-widest text-gold">
             Trusted By Industry Leaders

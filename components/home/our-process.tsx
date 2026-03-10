@@ -1,13 +1,24 @@
 "use client"
 
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { PROCESS_STEPS } from "@/lib/constants"
 import { SectionHeading } from "@/components/shared/section-heading"
 
 export function OurProcess() {
   return (
-    <section className="bg-secondary/30 py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <section className="relative bg-secondary/30 py-20 md:py-28 overflow-hidden">
+      {/* Background floral image */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src="/images/floral-bg-3.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-[0.05]"
+          priority={false}
+        />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <SectionHeading
           title="Our Development Process"
           subtitle="A proven four-step methodology that transforms your vision into a market-ready fragrance with precision and efficiency."
