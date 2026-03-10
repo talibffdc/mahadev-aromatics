@@ -29,9 +29,10 @@ export async function POST(request: NextRequest) {
     const adminPassword = process.env.ADMIN_PASSWORD
 
     if (!adminPassword) {
-      console.error("ADMIN_PASSWORD environment variable is not set")
+      console.error("[v0] ADMIN_PASSWORD environment variable is not set")
+      console.error("[v0] Available env vars:", Object.keys(process.env).filter(k => k.includes('ADMIN') || k.includes('admin')))
       return NextResponse.json(
-        { error: "Server configuration error" },
+        { error: "Admin password not configured. Please set ADMIN_PASSWORD in environment variables." },
         { status: 500 }
       )
     }
