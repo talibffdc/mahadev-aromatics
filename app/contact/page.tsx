@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import Image from "next/image"
 import { COMPANY } from "@/lib/constants"
 import { ContactForm } from "@/components/contact/contact-form"
 import { ContactInfo } from "@/components/contact/contact-info"
@@ -32,8 +33,18 @@ export default function ContactPage() {
       />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-secondary/30" />
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+        {/* Background floral image */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <Image
+            src="/images/floral-bg-2.jpg"
+            alt=""
+            fill
+            className="object-cover opacity-[0.08]"
+            priority={false}
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-secondary/30" />
         <div className="relative mx-auto max-w-7xl px-4 md:px-6">
           <nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-foreground transition-colors">Home</Link>

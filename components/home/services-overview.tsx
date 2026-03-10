@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowUpRight, FlaskConical, Sparkles, Repeat, ShieldCheck, Factory } from "lucide-react"
 import { SERVICES } from "@/lib/constants"
 import { GlassCard } from "@/components/shared/glass-card"
@@ -18,8 +19,18 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 export function ServicesOverview() {
   return (
-    <section className="py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <section className="relative py-20 md:py-28 overflow-hidden">
+      {/* Background floral image */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src="/images/floral-bg-4.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-[0.07]"
+          priority={false}
+        />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <SectionHeading
           title="Our Expertise"
           subtitle="Comprehensive fragrance services from analytical testing to industrial-scale production, powered by science and refined by artistry."

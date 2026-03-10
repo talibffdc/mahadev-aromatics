@@ -57,7 +57,17 @@ export default function AboutPage() {
 
       {/* Hero */}
       <section className="relative flex items-center overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-secondary/30" />
+        {/* Background floral image */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <Image
+            src="/images/floral-bg-1.jpg"
+            alt=""
+            fill
+            className="object-cover opacity-[0.08]"
+            priority={false}
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-secondary/30" />
         <div className="relative mx-auto max-w-7xl px-4 md:px-6">
           <nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-foreground transition-colors">Home</Link>

@@ -1,3 +1,4 @@
+import Image from "next/image"
 import {
   Droplets,
   Wind,
@@ -39,8 +40,18 @@ const CATEGORIES = [
 
 export function ProductCategories() {
   return (
-    <section className="bg-secondary/30 py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <section className="relative bg-secondary/30 py-20 md:py-28 overflow-hidden">
+      {/* Background floral image */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src="/images/floral-bg-1.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-[0.06]"
+          priority={false}
+        />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <SectionHeading
           title="Products We Create Fragrances For"
           subtitle="From luxury perfumes to everyday essentials, we develop fragrances optimized for every product category."

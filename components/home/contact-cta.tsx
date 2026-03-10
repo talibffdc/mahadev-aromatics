@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowRight, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { COMPANY } from "@/lib/constants"
@@ -6,8 +7,18 @@ import { AnimatedSection } from "@/components/shared/animated-section"
 
 export function ContactCta() {
   return (
-    <section className="bg-secondary/30 py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <section className="relative bg-secondary/30 py-20 md:py-28 overflow-hidden">
+      {/* Background floral image */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src="/images/floral-bg-3.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-[0.07]"
+          priority={false}
+        />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <AnimatedSection className="relative overflow-hidden rounded-2xl border border-gold/15 bg-background p-8 text-center md:p-16">
           {/* Decorative glow */}
           <div

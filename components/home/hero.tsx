@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { ArrowRight, FlaskConical, Sparkles, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -67,8 +68,18 @@ function FloatingDot({
 export function Hero() {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-secondary/30" />
+      {/* Background floral image */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src="/images/hero-floral-bg.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-[0.08]"
+          priority
+        />
+      </div>
+      {/* Background gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-secondary/30" />
 
       {/* Floating molecules */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
