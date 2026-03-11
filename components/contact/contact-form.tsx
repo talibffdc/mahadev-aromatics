@@ -99,10 +99,25 @@ export function ContactForm() {
       return
     }
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    setSubmitted(true)
-    setIsSubmitting(false)
+    // send data to our API route
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(result.data),
+      });
+
+      if (!res.ok) {
+        throw new Error("network response was not ok");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error("failed to send contact message", err);
+      setErrors({ message: "Unable to send message. Please try again later." });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
