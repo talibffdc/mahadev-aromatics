@@ -13,7 +13,7 @@ const contactSchema = z.object({
 
 // helper to call Resend's HTTP API
 async function sendWithResend(data: {
-  to: string;
+  to: string | string[];
   subject: string;
   html: string;
   text: string;
@@ -93,8 +93,12 @@ ${data.message}
 <p><strong>Message:</strong><br/>${data.message.replace(/\n/g, "<br/>")}</p>
 `;
 
+    // Parse EMAIL_TO as comma-separated list for multiple recipients
+    // Example: EMAIL_TO="email1@example.com,email2@example.com,email3@example.com"
+    const recipients = process.env.EMAIL_TO!.split(",").map((email) => email.trim());
+    
     await sendWithResend({
-      to: process.env.EMAIL_TO!,
+      to: recipients,
       subject,
       text,
       html,
