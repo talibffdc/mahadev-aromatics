@@ -102,12 +102,22 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-                <a
-                  href={`mailto:${COMPANY.email}`}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {COMPANY.email}
-                </a>
+                <div className="flex flex-col gap-1">
+                  <a
+                    href={`mailto:${COMPANY.email}`}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {COMPANY.email}
+                  </a>
+                  {COMPANY.email2 && (
+                    <a
+                      href={`mailto:${COMPANY.email2}`}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {COMPANY.email2}
+                    </a>
+                  )}
+                </div>
               </li>
             </ul>
           </div>
