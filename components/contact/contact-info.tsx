@@ -11,12 +11,6 @@ const INFO_ITEMS = [
     href: `tel:${COMPANY.phone}`,
   },
   {
-    icon: Mail,
-    label: "Email",
-    value: COMPANY.email,
-    href: `mailto:${COMPANY.email}`,
-  },
-  {
     icon: MapPin,
     label: "Address",
     value: COMPANY.address,
@@ -60,6 +54,31 @@ export function ContactInfo() {
               </div>
             </div>
           ))}
+          {/* Email Section */}
+          <div className="flex items-start gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gold/10">
+              <Mail className="h-4 w-4 text-gold" />
+            </div>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Email
+              </p>
+              <a
+                href={`mailto:${COMPANY.email}`}
+                className="mt-0.5 block text-sm text-foreground hover:text-gold transition-colors"
+              >
+                {COMPANY.email}
+              </a>
+              {COMPANY.email2 && (
+                <a
+                  href={`mailto:${COMPANY.email2}`}
+                  className="mt-0.5 block text-sm text-foreground hover:text-gold transition-colors"
+                >
+                  {COMPANY.email2}
+                </a>
+              )}
+            </div>
+          </div>
         </div>
       </GlassCard>
 
