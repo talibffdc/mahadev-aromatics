@@ -388,14 +388,19 @@ Payment Method: Cash on Delivery / Bank Transfer
       text,
     });
 
-    // Send customer confirmation email
-    const customerEmail = buildCustomerEmail(order, orderId);
-    await sendWithResend({
-      to: order.customer.email,
-      subject: customerEmail.subject,
-      html: customerEmail.html,
-      text: customerEmail.text,
-    });
+    // Try to send customer confirmation email (may fail if domain not verified)
+    try {
+      const customerEmail = buildCustomerEmail(order, orderId);
+      await sendWithResend({
+        to: order.customer.email,
+        subject: customerEmail.subject,
+        html: customerEmail.html,
+        text: customerEmail.text,
+      });
+    } catch (customerEmailError) {
+      // Log error but don't fail the order - admin email was sent successfully
+      console.warn("Customer confirmation email failed (domain not verified?):", customerEmailError);
+    }
 
     return new Response(
       JSON.stringify({ success: true, orderId }),
