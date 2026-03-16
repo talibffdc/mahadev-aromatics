@@ -82,6 +82,134 @@ async function sendWithResend(data: {
   return res.json();
 }
 
+// Build customer confirmation email
+function buildCustomerEmail(
+  order: z.infer<typeof orderSchema>,
+  orderId: string
+) {
+  const itemsText = order.items
+    .map((item) => {
+      const price = item.variant.discountPrice ?? item.variant.price;
+      return `- ${item.product.title} (${item.variant.name}) x ${item.quantity} = ${formatPrice(price * item.quantity)}`;
+    })
+    .join("\n");
+
+  const itemsHtml = order.items
+    .map((item) => {
+      const price = item.variant.discountPrice ?? item.variant.price;
+      const lineTotal = price * item.quantity;
+      return `
+        <tr>
+          <td style="padding: 12px; border-bottom: 1px solid #eee;">
+            <strong>${item.product.title}</strong><br/>
+            <span style="color: #666; font-size: 14px;">${item.variant.name}</span>
+          </td>
+          <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: right;"><strong>${formatPrice(lineTotal)}</strong></td>
+        </tr>
+      `;
+    })
+    .join("");
+
+  const subject = "Your Order Has Been Successfully Placed";
+
+  const text = `
+Thank you for your order!
+
+Your order has been successfully placed and is being processed.
+
+ORDER DETAILS
+-------------
+Order ID: ${orderId}
+
+Products:
+${itemsText}
+
+Subtotal: ${formatPrice(order.totals.subtotal)}
+Shipping: ${order.totals.shipping === 0 ? "Free" : formatPrice(order.totals.shipping)}
+Total Amount: ${formatPrice(order.totals.total)}
+
+SHIPPING ADDRESS
+----------------
+${order.shipping.address}
+${order.shipping.city}, ${order.shipping.state}
+PIN: ${order.shipping.pincode}
+
+We will notify you once your order is shipped.
+
+Thank you for shopping with Mahadev Aromatics!
+`;
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Order Confirmation - ${orderId}</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
+    <h1 style="color: #d4af37; margin: 0; font-size: 24px;">Order Confirmed!</h1>
+    <p style="color: #fff; margin: 10px 0 0 0; font-size: 14px;">Thank you for your order</p>
+  </div>
+  
+  <div style="background: #fff; padding: 30px; border: 1px solid #eee; border-top: none;">
+    <p style="font-size: 16px; margin-bottom: 25px;">
+      Dear <strong>${order.customer.name}</strong>,<br/><br/>
+      Thank you for your order. Your order has been successfully placed and is being processed.
+    </p>
+    
+    <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 25px; text-align: center;">
+      <p style="margin: 0; font-size: 14px; color: #666;">Order ID</p>
+      <p style="margin: 5px 0 0 0; font-size: 20px; color: #d4af37; font-weight: bold;">${orderId}</p>
+    </div>
+    
+    <h2 style="color: #1a1a1a; border-bottom: 2px solid #d4af37; padding-bottom: 10px; font-size: 18px;">Order Details</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+      <thead>
+        <tr style="background: #f5f5f5;">
+          <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Product</th>
+          <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Qty</th>
+          <th style="padding: 12px; text-align: right; border-bottom: 2px solid #ddd;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${itemsHtml}
+      </tbody>
+    </table>
+    
+    <div style="background: #1a1a1a; color: #fff; padding: 20px; border-radius: 5px; margin-bottom: 25px;">
+      <table style="width: 100%;">
+        <tr><td style="padding: 5px 0;">Subtotal:</td><td style="text-align: right;">${formatPrice(order.totals.subtotal)}</td></tr>
+        <tr><td style="padding: 5px 0;">Shipping:</td><td style="text-align: right;">${order.totals.shipping === 0 ? '<span style="color: #4ade80;">Free</span>' : formatPrice(order.totals.shipping)}</td></tr>
+        <tr><td colspan="2" style="border-top: 1px solid #444; padding-top: 10px;"></td></tr>
+        <tr><td style="padding: 5px 0; font-size: 18px;"><strong>Total Amount:</strong></td><td style="text-align: right; font-size: 18px; color: #d4af37;"><strong>${formatPrice(order.totals.total)}</strong></td></tr>
+      </table>
+    </div>
+    
+    <h2 style="color: #1a1a1a; border-bottom: 2px solid #d4af37; padding-bottom: 10px; font-size: 18px;">Shipping Address</h2>
+    <p style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 25px;">
+      ${order.shipping.address}<br/>
+      ${order.shipping.city}, ${order.shipping.state}<br/>
+      <strong>PIN:</strong> ${order.shipping.pincode}
+    </p>
+    
+    <p style="padding: 15px; background: #fff8e7; border-left: 4px solid #d4af37; border-radius: 0 5px 5px 0;">
+      We will notify you once your order is shipped.
+    </p>
+  </div>
+  
+  <div style="background: #f5f5f5; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; font-size: 12px; color: #666;">
+    <p style="margin: 0 0 10px 0;"><strong>Mahadev Aromatics</strong></p>
+    <p style="margin: 0;">Thank you for shopping with us!</p>
+  </div>
+</body>
+</html>
+`;
+
+  return { subject, text, html };
+}
+
 export async function POST(request: NextRequest) {
   // Validate environment variables
   if (
@@ -250,7 +378,7 @@ Payment Method: Cash on Delivery / Bank Transfer
 </html>
 `;
 
-    // Send to configured recipients
+    // Send to configured admin recipients
     const recipients = process.env.EMAIL_TO!.split(",").map((email) => email.trim());
 
     await sendWithResend({
@@ -258,6 +386,15 @@ Payment Method: Cash on Delivery / Bank Transfer
       subject,
       html,
       text,
+    });
+
+    // Send customer confirmation email
+    const customerEmail = buildCustomerEmail(order, orderId);
+    await sendWithResend({
+      to: order.customer.email,
+      subject: customerEmail.subject,
+      html: customerEmail.html,
+      text: customerEmail.text,
     });
 
     return new Response(
