@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { ShoppingBag, CreditCard, CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
@@ -48,8 +48,11 @@ function formatPrice(price: number) {
 export function CheckoutForm() {
   const { items, totalPrice, clearCart } = useCart()
   const [submitted, setSubmitted] = useState(false)
+  const [orderId, setOrderId] = useState<string | null>(null)
   const [errors, setErrors] = useState<FormErrors>({})
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
 
   if (items.length === 0 && !submitted) {
     return (
@@ -78,11 +81,13 @@ export function CheckoutForm() {
           Order Confirmed!
         </h2>
         <p className="mt-2 text-muted-foreground">
-          Thank you for your order. A confirmation email has been sent to your email address.
+          Thank you for your order. We have received your order and will contact you shortly.
         </p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Order ID: MA-{Date.now().toString(36).toUpperCase()}
-        </p>
+        {orderId && (
+          <p className="mt-1 text-sm text-muted-foreground">
+            Order ID: {orderId}
+          </p>
+        )}
         <Button
           asChild
           className="mt-8 bg-gold text-primary-foreground hover:bg-gold-dark font-medium"
@@ -100,6 +105,7 @@ export function CheckoutForm() {
     e.preventDefault()
     setIsSubmitting(true)
     setErrors({})
+    setSubmitError(null)
 
     const formData = new FormData(e.currentTarget)
     const data: CheckoutFormData = {
@@ -129,15 +135,78 @@ export function CheckoutForm() {
       return
     }
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    clearCart()
-    setSubmitted(true)
-    setIsSubmitting(false)
+    // Submit order to API
+    try {
+      const shipping = totalPrice >= 999 ? 0 : 99
+      const grandTotal = totalPrice + shipping
+
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer: {
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            company: data.company || undefined,
+          },
+          shipping: {
+            address: data.address,
+            city: data.city,
+            state: data.state,
+            pincode: data.pincode,
+          },
+          items: items.map((item) => ({
+            product: {
+              id: item.product.id,
+              title: item.product.title,
+              images: item.product.images,
+            },
+            variant: {
+              id: item.variant.id,
+              name: item.variant.name,
+              price: item.variant.price,
+              discountPrice: item.variant.discountPrice,
+            },
+            quantity: item.quantity,
+          })),
+          totals: {
+            subtotal: totalPrice,
+            shipping,
+            total: grandTotal,
+          },
+        }),
+      })
+
+      const responseData = await response.json()
+
+      if (!response.ok) {
+        throw new Error(responseData.error || "Failed to place order")
+      }
+
+      setOrderId(responseData.orderId)
+      clearCart()
+      setSubmitted(true)
+    } catch (error) {
+      console.error("Order submission error:", error)
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Failed to place order. Please try again."
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-3" noValidate>
+    <form ref={formRef} onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-3" noValidate>
+      {submitError && (
+        <div className="lg:col-span-3 flex items-center gap-2 rounded-lg border border-destructive/20 bg-destructive/5 p-4 text-sm text-destructive">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <p>{submitError}</p>
+        </div>
+      )}
       {/* Form */}
       <div className="lg:col-span-2 space-y-8">
         {/* Customer Info */}
