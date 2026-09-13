@@ -65,9 +65,8 @@ async function syncLeadToGoogleSheets(data: {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${webhookSecret}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, secret: webhookSecret }),
         signal: AbortSignal.timeout(5000),
       });
 
