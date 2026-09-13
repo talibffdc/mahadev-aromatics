@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { randomUUID } from "node:crypto";
 import { z } from "zod";
 
 // same schema as the client so we don't trust client-side validation
@@ -38,6 +39,50 @@ async function sendWithResend(data: {
     throw new Error(`Resend error: ${res.status} ${body}`);
   }
   return res.json();
+}
+
+async function syncLeadToGoogleSheets(data: {
+  submissionId: string;
+  name: string;
+  company?: string;
+  email: string;
+  phone?: string;
+  requirement?: string;
+  message: string;
+}) {
+  const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  const webhookSecret = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET;
+
+  if (!webhookUrl || !webhookSecret) {
+    console.warn("Google Sheets sync skipped: webhook configuration is missing");
+    return;
+  }
+
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, secret: webhookSecret }),
+        signal: AbortSignal.timeout(5000),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Google Sheets error: ${response.status} ${await response.text()}`);
+      }
+      return;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) {
+        await new Promise((resolve) => setTimeout(resolve, 250 * 2 ** (attempt - 1)));
+      }
+    }
+  }
+
+  console.error("Google Sheets sync failed after retries", lastError);
 }
 
 export async function POST(request: NextRequest) {
@@ -97,13 +142,25 @@ ${data.message}
     // Example: EMAIL_TO="email1@example.com,email2@example.com,email3@example.com"
     const recipients = process.env.EMAIL_TO!.split(",").map((email) => email.trim());
     
-    await sendWithResend({
-      to: recipients,
-      subject,
-      text,
-      html,
+    const submissionId = randomUUID();
+    const sheetSync = syncLeadToGoogleSheets({
+      submissionId,
+      ...data,
     });
 
+    try {
+      await sendWithResend({
+        to: recipients,
+        subject,
+        text,
+        html,
+      });
+    } catch (err) {
+      await sheetSync;
+      throw err;
+    }
+
+    await sheetSync;
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (err) {
     console.error("email error", err);
