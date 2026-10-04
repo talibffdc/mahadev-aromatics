@@ -11,7 +11,7 @@ export const COMPANY = {
   city: "Sonipat",
   state: "Haryana",
   country: "India",
-  website: "https://mahadevromatics.com",
+  website: "https://mahadevaromatics.com/",
   founded: "2005",
   experience: "20+",
   clientsServed: "50+",
