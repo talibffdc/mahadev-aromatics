@@ -231,6 +231,198 @@ function GcmsAdditionalContent() {
   )
 }
 
+const CUSTOM_FRAGRANCE_ADDITIONAL_FAQS = [
+  {
+    question: "What is custom fragrance development?",
+    answer: "Custom fragrance development is the process of creating an original fragrance profile from a brand brief, desired scent direction, selected ingredients, formulation work, evaluation, and refinement for the intended product application.",
+  },
+  {
+    question: "What does a fragrance development company do?",
+    answer: "A fragrance development company translates a brand or product brief into fragrance concepts, supports formulation and sample development, evaluates performance, and collaborates with the client toward a suitable final fragrance.",
+  },
+  {
+    question: "Can you develop fragrances for perfume brands?",
+    answer: "Yes. Mahadev Aromatics develops bespoke fragrance profiles for perfume brands, including signature scent concepts shaped around brand identity, target audience, market positioning, and intended application.",
+  },
+  {
+    question: "Do you provide fragrance formulation services?",
+    answer: "Yes. Our fragrance formulation services include fragrance concept development, ingredient selection, sample development, evaluation, refinement, and technical documentation for the agreed project scope.",
+  },
+  {
+    question: "Can you develop fragrances for cosmetics and personal care?",
+    answer: "Yes. Fragrance development can be adapted for cosmetics and personal-care applications, with evaluation focused on the intended product base, sensory direction, and performance requirements.",
+  },
+  {
+    question: "What is the difference between fragrance development and fragrance matching?",
+    answer: "Custom fragrance development creates a fragrance from a brand brief and desired profile. Fragrance matching and recreation starts with an existing reference sample and works toward a close, technically informed match without promising exact duplication.",
+  },
+  {
+    question: "Can GCMS analysis support fragrance development?",
+    answer: "GCMS/GLC analysis can provide analytical insight when it is relevant to a project, but it is a separate service and is not automatically included in every fragrance development project.",
+  },
+  {
+    question: "Do you develop fragrances for home-care and air-care applications?",
+    answer: "Yes. Our fragrance development services can support home-care and air-care applications such as detergents, household products, air fresheners, candles, and diffusers, subject to the project brief and target product base.",
+  },
+] as const
+
+function CustomFragranceAdditionalContent() {
+  return (
+    <>
+      <section className="py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <SectionHeading
+            title="Fragrance Development for Brands"
+            subtitle="A collaborative path from fragrance brief to a distinctive product-ready scent."
+          />
+          <div className="space-y-5 text-base leading-relaxed text-muted-foreground">
+            <p>
+              Mahadev Aromatics supports perfume brands, cosmetics companies, personal-care brands, and product developers with custom fragrance development built around a clear fragrance brief. We begin by understanding the brand, audience, product application, scent direction, and the role the fragrance should play in the finished product.
+            </p>
+            <p>
+              Our perfumers translate that fragrance concept into formulation and sample development, followed by evaluation and refinement based on the agreed brief and feedback. This collaborative approach helps brands move from an initial idea to final fragrance development with technical context at each stage.
+            </p>
+            <p>
+              As one of the fragrance development companies serving businesses in India, we provide development collaboration rather than a one-size-fits-all catalogue solution. The scope, samples, evaluation, and documentation are discussed around each project&apos;s requirements.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-secondary/30 py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <SectionHeading
+            title="What Is Custom Fragrance Development?"
+            subtitle="Original fragrance creation guided by a brand brief and intended application."
+          />
+          <div className="space-y-5 text-base leading-relaxed text-muted-foreground">
+            <p>
+              Custom fragrance development means developing an original fragrance profile for a defined brand, product, or market objective. It combines creative direction with the practical work of selecting fragrance ingredients, creating a formulation, developing samples, evaluating the scent, and refining it for the intended application.
+            </p>
+            <p>
+              A professional fragrance formulation service helps translate a brand brief into a fragrance that is considered for sensory character, product context, and development requirements. The final direction may be bespoke, functional, expressive, or a combination of these depending on the brief.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <SectionHeading
+            title="Our Fragrance Development Process"
+            subtitle="A clear, collaborative workflow for custom fragrance and perfume formula development."
+          />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              ["1. Understand the Brand & Brief", "We discuss brand identity, target audience, product application, market direction, and the practical requirements that shape the fragrance brief."],
+              ["2. Define the Olfactive Direction", "We establish the desired scent direction, fragrance concept, references, emotional character, and the role of the fragrance in the finished product."],
+              ["3. Formulation & Fragrance Creation", "Our perfumers select suitable fragrance ingredients and develop a formulation aligned with the agreed creative and application direction."],
+              ["4. Sample Development", "The developing fragrance is prepared as samples for review in the context of the project and intended product base."],
+              ["5. Evaluation & Refinement", "Feedback and evaluation guide refinement of the fragrance profile, performance, and fit with the original brief."],
+              ["6. Finalization & Documentation", "Once the direction is agreed, the final fragrance development is supported with the relevant technical documentation for the project scope."],
+            ].map(([title, description]) => (
+              <GlassCard key={title}>
+                <h3 className="font-serif text-xl font-semibold text-foreground">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{description}</p>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-secondary/30 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <SectionHeading
+            title="Fragrance Development for Different Applications"
+            subtitle="Application-aware fragrance creation for a range of product categories."
+          />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              ["Fine Perfumery", "Develop distinctive perfume profiles and signature scent directions for fine fragrance products and brands."],
+              ["Personal Care", "Create fragrances considered for products such as body care, hair care, deodorants, and other personal-care applications."],
+              ["Cosmetics", "Develop fragrance directions suited to cosmetic products while considering the intended base and sensory experience."],
+              ["Home Care", "Support fragrance creation for household and cleaning products with the intended product application in view."],
+              ["Air Care", "Develop fragrance concepts for air fresheners, candles, diffusers, and related air-care products."],
+              ["Industrial Applications", "Support functional fragrance development for businesses with defined application, performance, and product requirements."],
+            ].map(([title, description]) => (
+              <GlassCard key={title}>
+                <h3 className="font-serif text-xl font-semibold text-foreground">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{description}</p>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <SectionHeading
+            title="Why Work With a Fragrance Development Company?"
+            subtitle="Technical and creative collaboration for brands developing fragrance products."
+          />
+          <div className="space-y-5 text-base leading-relaxed text-muted-foreground">
+            <p>
+              Working with a professional fragrance development company gives brands access to technical expertise, formulation support, fragrance evaluation, and a collaborative development process. It also helps keep the fragrance direction connected to the intended product application rather than treating scent as an isolated creative exercise.
+            </p>
+            <p>
+              Mahadev Aromatics supports application-specific fragrance development and can bring analytical context into a project where relevant. Development decisions remain guided by the project brief, evaluation, product base, and the information available for the submitted materials.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-secondary/30 py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <SectionHeading
+            title="Custom Fragrance Development vs Fragrance Matching"
+            subtitle="Two related services with different starting points and search intent."
+          />
+          <div className="space-y-5 text-base leading-relaxed text-muted-foreground">
+            <p>
+              Custom fragrance development creates or develops a fragrance according to a brand&apos;s brief, desired scent direction, and intended application. It begins with an opportunity or product idea rather than an existing fragrance that must be reproduced.
+            </p>
+            <p>
+              Fragrance matching and recreation begins with an existing reference sample and uses analytical and olfactory work to develop a fragrance toward a close match. It does not promise exact duplication or 100% matching. Explore our <Link href="/services/fragrance-matching-recreation" className="font-medium text-gold underline-offset-4 hover:underline">fragrance matching and recreation service</Link> for that requirement.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <SectionHeading
+            title="Analytical Support for Fragrance Development"
+            subtitle="Connecting fragrance development with analysis and raw-material quality when relevant."
+          />
+          <div className="space-y-5 text-base leading-relaxed text-muted-foreground">
+            <p>
+              Some fragrance development projects benefit from analytical support. GCMS and GLC analysis can provide insight into a submitted fragrance sample or reference material when composition information is relevant to the development question. Learn more about <Link href="/services/gcms-glc-analysis" className="font-medium text-gold underline-offset-4 hover:underline">GCMS &amp; GLC analysis</Link>.
+            </p>
+            <p>
+              Raw-material testing can also support quality conversations around selected fragrance materials, specifications, and incoming material evaluation. Explore our <Link href="/services/raw-material-testing" className="font-medium text-gold underline-offset-4 hover:underline">raw material testing and QC service</Link>. These are related services and are not automatically included in every custom fragrance development project.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-secondary/30 py-16 md:py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center md:px-6">
+          <SectionHeading
+            title="Development Locations"
+            subtitle="Mahadev Aromatics has laboratory presence supporting fragrance work in India."
+          />
+          <p className="text-base leading-relaxed text-muted-foreground">
+            Our laboratory presence includes <strong className="text-foreground">Kannauj, Jaipur, and Sonipat</strong>. Contact our team to discuss current project requirements, sample guidance, and service availability.
+          </p>
+          <Link href="/services/industrial-fragrance-solutions" className="mt-5 inline-block font-medium text-gold underline-offset-4 hover:underline">
+            Explore industrial fragrance solutions
+          </Link>
+        </div>
+      </section>
+    </>
+  )
+}
+
 export async function generateStaticParams() {
   return SERVICES.map((service) => ({ slug: service.slug }))
 }
@@ -245,12 +437,17 @@ export async function generateMetadata({
   if (!service) return {}
 
   const isGcmsPage = slug === "gcms-glc-analysis"
+  const isCustomFragrancePage = slug === "custom-fragrance-development"
   const title = isGcmsPage
     ? "GCMS & GLC Analysis | Fragrance Analysis & Testing | Mahadev Aromatics"
-    : service.title
+    : isCustomFragrancePage
+      ? "Custom Fragrance Development | Fragrance Development Company | Mahadev Aromatics"
+      : service.title
   const description = isGcmsPage
     ? "Professional GCMS and GLC fragrance analysis for composition identification, raw material testing, quality control, and analytical evaluation by Mahadev Aromatics."
-    : service.shortDescription
+    : isCustomFragrancePage
+      ? "Custom fragrance development and formulation services for brands across perfumery, cosmetics, personal care, home care, and other fragrance applications."
+      : service.shortDescription
 
   return {
     title,
@@ -288,7 +485,12 @@ export default async function ServicePage({
     { name: service.title, url: `${COMPANY.website}/services/${service.slug}` },
   ])
   const isGcmsPage = slug === "gcms-glc-analysis"
-  const pageFaqs = isGcmsPage ? [...service.faqs, ...GCMS_ADDITIONAL_FAQS] : [...service.faqs]
+  const isCustomFragrancePage = slug === "custom-fragrance-development"
+  const pageFaqs = isGcmsPage
+    ? [...service.faqs, ...GCMS_ADDITIONAL_FAQS]
+    : isCustomFragrancePage
+      ? [...service.faqs, ...CUSTOM_FRAGRANCE_ADDITIONAL_FAQS]
+      : [...service.faqs]
   const faqSchema = getFAQSchema(pageFaqs)
 
   return (
@@ -387,6 +589,7 @@ export default async function ServicePage({
       </section>
 
       {isGcmsPage && <GcmsAdditionalContent />}
+      {isCustomFragrancePage && <CustomFragranceAdditionalContent />}
 
       {/* FAQ */}
       <section className="py-20 md:py-28">
